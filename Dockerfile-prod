@@ -1,0 +1,11 @@
+FROM maven:3.8-openjdk-18-slim AS build
+RUN mkdir -p /workspace-auth
+WORKDIR /workspace-auth
+COPY pom.xml /workspace-auth
+COPY src /workspace-auth/src
+RUN mvn -B -f pom.xml clean package -DskipTests
+
+FROM openjdk:18-jdk-slim
+COPY --from=build /workspace-auth/target/*.jar auth-service.jar
+EXPOSE 8761
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","auth-service.jar"]
