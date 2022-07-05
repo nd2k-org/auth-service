@@ -1,0 +1,15 @@
+server:
+  port: ${PORT:8100}
+
+spring:
+  application:
+    name: AUTH-SERVICE
+
+eureka:
+  instance:
+    hostname: nd2k-registry-server.herokuapp.com
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8001/eureka/
