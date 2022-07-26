@@ -10,7 +10,7 @@ import javax.persistence.ManyToMany;
 import java.util.Collection;
 
 @Builder
-@Entity
+@Entity(name = "users")
 public record User(
         @Id @GeneratedValue(strategy = GenerationType.AUTO) Long id,
         String email,
