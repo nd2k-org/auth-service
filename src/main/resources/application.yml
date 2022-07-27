@@ -5,9 +5,9 @@ spring:
   application:
     name: AUTH-SERVICE
   datasource:
-    url: jdbc:postgresql://ec2-52-30-159-47.eu-west-1.compute.amazonaws.com:5432/dcsfedjkbtmrav
-    username: htriawujxrhtcu
-    password: e5818d61f975caf6ef4a070084318c37d66f320fe2530051bb9ebc1dbc890df7
+    url: 
+    username: 
+    password: 
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
