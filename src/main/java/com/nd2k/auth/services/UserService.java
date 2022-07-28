@@ -1,7 +1,7 @@
 package com.nd2k.auth.services;
 
-import com.nd2k.auth.models.Role;
-import com.nd2k.auth.models.User;
+import com.nd2k.auth.models.domain.Role;
+import com.nd2k.auth.models.domain.User;
 
 import java.util.List;
 

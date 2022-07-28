@@ -1,6 +1,7 @@
 package com.nd2k.auth.controller;
 
-import com.nd2k.auth.models.User;
+import com.nd2k.auth.models.domain.User;
+import com.nd2k.auth.models.dto.SignUpRequest;
 import com.nd2k.auth.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,14 @@ public record UserController(UserService userService) {
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<User> createUser(@RequestBody SignUpRequest signUpRequest) {
+        String email = signUpRequest.email();
+        String password = signUpRequest.password();
+        User userToCreate = new User(email, password);
+        return ResponseEntity.ok().body(userService.createUser(userToCreate));
     }
 
     @PostMapping

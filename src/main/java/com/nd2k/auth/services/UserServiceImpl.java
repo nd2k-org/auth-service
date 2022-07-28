@@ -1,7 +1,7 @@
 package com.nd2k.auth.services;
 
-import com.nd2k.auth.models.Role;
-import com.nd2k.auth.models.User;
+import com.nd2k.auth.models.domain.Role;
+import com.nd2k.auth.models.domain.User;
 import com.nd2k.auth.repositories.RoleRepository;
 import com.nd2k.auth.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        log.info("Creating new user {} to database", user.email());
+        log.info("Creating new user {} to database", user.getEmail());
         return userRepository.save(user);
     }
 
     @Override
     public Role createRole(Role role) {
-        log.info("Creating new role {} to database", role.roleName());
+        log.info("Creating new role {} to database", role.getRoleName());
         return roleRepository.save(role);
     }
 
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         log.info("Adding role {} to user {}", roleName, email);
         User user = userRepository.findByEmail(email);
         Role role = roleRepository.findByRoleName(roleName);
-        user.roles().add(role);
+        user.getRoles().add(role);
     }
 
     @Override
