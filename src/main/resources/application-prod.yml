@@ -5,7 +5,7 @@ spring:
   application:
     name: AUTH-SERVICE
   datasource:
-    url: ${DATABASE_HOST}
+    url: ${DATABASE_URL}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
