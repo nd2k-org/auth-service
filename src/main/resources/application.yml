@@ -1,16 +1,16 @@
 server:
-  port: 8100
+  port: ${PORT}
 
 spring:
   application:
-    name: AUTH-SERVICE
+    name: ${APP_NAME}
   h2:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: password
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driverClassName: org.h2.Driver
   jpa:
     spring:
@@ -32,3 +32,9 @@ eureka:
 
 security:
   allowedOrigins: http://127.0.0.1:5173
+  access-token:
+    public: ${ACCESS_TOKEN_PUBLIC_KEY_PATH}
+    private: ${ACCESS_TOKEN_PRIVATE_KEY_PATH}
+  refresh-token:
+    public: ${REFRESH_TOKEN_PUBLIC_KEY_PATH}
+    private: ${REFRESH_TOKEN_PRIVATE_KEY_PATH}

@@ -1,54 +1,61 @@
 package com.nd2k.auth.services;
 
-import com.nd2k.auth.models.domain.Role;
 import com.nd2k.auth.models.domain.User;
-import com.nd2k.auth.repositories.RoleRepository;
 import com.nd2k.auth.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.text.MessageFormat;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserDetailsManager {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
-    @Override
-    public User createUser(User user) {
-        log.info("Creating new user {} to database", user.getEmail());
-        return userRepository.save(user);
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public Role createRole(Role role) {
-        log.info("Creating new role {} to database", role.getRoleName());
-        return roleRepository.save(role);
+    public void createUser(UserDetails user) {
+        ((User) user).setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save((User) user);
     }
 
     @Override
-    public void addRoleToUser(String email, String roleName) {
-        log.info("Adding role {} to user {}", roleName, email);
-        User user = userRepository.findByEmail(email);
-        Role role = roleRepository.findByRoleName(roleName);
-        user.getRoles().add(role);
+    public void updateUser(UserDetails user) {
+
     }
 
     @Override
-    public User getUser(String email) {
-        log.info("Fetching user {} from database", email);
-        return userRepository.findByEmail(email);
+    public void deleteUser(String email) {
+
     }
 
     @Override
-    public List<User> getUsers() {
-        log.info("Fetching all users");
-        return userRepository.findAll();
+    public void changePassword(String oldPassword, String newPassword) {
+
+    }
+
+    @Override
+    public boolean userExists(String email) {
+        return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        MessageFormat.format("Email {0} does not exist", email)
+                ));
     }
 }
