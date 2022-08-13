@@ -26,3 +26,9 @@ eureka:
 
 security:
   allowedOrigins: https://svelte-gui.herokuapp.com/
+  access-token:
+    public: ${ACCESS_TOKEN_PUBLIC_KEY_PATH}
+    private: ${ACCESS_TOKEN_PRIVATE_KEY_PATH}
+  refresh-token:
+    public: ${REFRESH_TOKEN_PUBLIC_KEY_PATH}
+    private: ${REFRESH_TOKEN_PRIVATE_KEY_PATH}
