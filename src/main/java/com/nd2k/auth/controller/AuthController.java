@@ -48,7 +48,7 @@ public record AuthController(
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<TokenResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<TokenResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) throws Exception {
         Authentication authentication = daoAuthenticationProvider.authenticate(
                 UsernamePasswordAuthenticationToken.authenticated(
                         signInRequest.email(), signInRequest.password(), Collections.emptyList())

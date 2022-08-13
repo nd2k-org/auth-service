@@ -22,10 +22,10 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -35,13 +35,22 @@ public class WebSecurityConfig {
     private final JwtToUserConverter jwtToUserConverter;
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-
-    public WebSecurityConfig(KeyUtils keyUtils, JwtToUserConverter jwtToUserConverter, UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(
+            KeyUtils keyUtils,
+            JwtToUserConverter jwtToUserConverter,
+            UserDetailsManager userDetailsManager,
+            PasswordEncoder passwordEncoder,
+            @Qualifier("customAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
+            @Qualifier("customAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {
         this.keyUtils = keyUtils;
         this.jwtToUserConverter = jwtToUserConverter;
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -58,8 +67,8 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
                 );
         return http.build();
     }
