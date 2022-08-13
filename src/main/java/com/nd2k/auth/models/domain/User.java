@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -38,6 +39,12 @@ public class User implements UserDetails {
         @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(	name = "user_roles")
         Collection<Role> roles;
+
+        public User(String email, String password, List<Role> roles) {
+                this.email = email;
+                this.password = password;
+                this.roles = roles;
+        }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {

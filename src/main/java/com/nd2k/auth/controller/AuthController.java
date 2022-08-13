@@ -39,7 +39,7 @@ public record AuthController(
 ) {
     @PostMapping("/signup")
     public ResponseEntity<TokenResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User user = new User(null, signUpRequest.email(), signUpRequest.password(), Collections.emptyList());
+        User user = new User(signUpRequest.email(), signUpRequest.password(), Collections.emptyList());
         userDetailsManager.createUser(user);
         Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(
                 user, signUpRequest.password(), Collections.emptyList()
