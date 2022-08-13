@@ -84,10 +84,6 @@ public class KeyUtils {
             } catch (NoSuchAlgorithmException | IOException | InvalidKeySpecException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-            if (Arrays.asList(environment.getActiveProfiles()).contains("prod")) {
-                throw new RuntimeException("Public & Private keys are not existing");
-            }
         }
 
         File directory = new File("access-refresh-token-keys");
